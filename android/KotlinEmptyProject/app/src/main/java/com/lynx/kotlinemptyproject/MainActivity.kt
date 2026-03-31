@@ -13,7 +13,9 @@ class MainActivity : Activity() {
         val lynxView: LynxView = buildLynxView()
         setContentView(lynxView)
 
-        val uri = "main.lynx.bundle";
+        // val uri = "main.lynx.bundle";
+
+        val uri = "http://192.168.0.204:3000/main.lynx.bundle";
         lynxView.renderTemplateUrl(uri, "")
 
         // open switch page

@@ -3,6 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools">
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+<!-- 
+              android:usesCleartextTraffic="true"
+从 Android 9（API 28） 开始，Google 出于安全考虑，默认禁止应用发起明文 HTTP 请求，只允许加密的 HTTPS 请求 
+这是一个 http:// 明文协议地址。在没有这个配置的情况下，Android 系统会直接在网络层拦截并阻断这个请求，App 收不到任何数据，LynxView 自然无法显示页面。
+ -->
     <application
         android:name=".YourApplication"
         android:allowBackup="true"
@@ -12,7 +17,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.KotlinEmptyProject"
+              android:usesCleartextTraffic="true"
+  android:theme="@style/Theme.KotlinEmptyProject"
         tools:targetApi="31">
         <activity
             android:name=".DebugActivity"
