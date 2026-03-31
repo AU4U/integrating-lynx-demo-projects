@@ -24,26 +24,31 @@ export function App(props: {
 
   return (
     <view bindtap={jump}>
-      <view className='Background' />
-      <view className='App'>
-        <view className='Banner'>
+      <view className="Background" />
+      <view className="App">
+        <view className="Banner">
           <view
-            className='Logo'
+            className="Logo"
             style={{ transform: `translateY(${logoY}px)` }}
             bindtap={onTap}
           >
-            {alterLogo
-              ? <image src={reactLynxLogo} className='Logo--react' />
-              : <image src={lynxLogo} className='Logo--lynx' />}
+            {alterLogo ? (
+              <image src={reactLynxLogo} className="Logo--react" />
+            ) : (
+              <image src={lynxLogo} className="Logo--lynx" />
+            )}
           </view>
-          <text className='Title'>React</text>
-          <text className='Subtitle'>on Lynx</text>
+          <text className="Title">React</text>
+          <text className="Subtitle">on Lynx</text>
         </view>
-        <view className='Content'>
-          <image src={arrow} className='Arrow' />
-          <text className='Description'>Tap the logo and have fun!</text>
-          <text className='Hint'>
-            Edit<text
+        <view className="Content">
+          <image src={arrow} className="Arrow" />
+          <text className=" text-6xl font-bold leading-normal underline">
+           hello
+          </text>
+          <text className="Hint">
+            Edit
+            <text
               style={{
                 fontStyle: 'italic',
                 color: 'rgba(255, 255, 255, 0.85)',
@@ -57,5 +62,5 @@ export function App(props: {
         <view style={{ flex: 1 }} />
       </view>
     </view>
-  )
+  );
 }
