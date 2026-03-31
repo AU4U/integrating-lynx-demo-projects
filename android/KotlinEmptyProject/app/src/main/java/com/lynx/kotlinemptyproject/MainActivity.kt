@@ -19,7 +19,7 @@ class MainActivity : Activity() {
         lynxView.renderTemplateUrl(uri, "")
 
         // open switch page
-        // startActivity(Intent(this, SwitchActivity::class.java));
+         startActivity(Intent(this, SwitchActivity::class.java));
     }
 
     private fun buildLynxView(): LynxView {
