@@ -12,9 +12,7 @@ test('App', async () => {
 
   render(
     <App
-      onRender={() => {
-        cb(`__MAIN_THREAD__: ${__MAIN_THREAD__}`)
-      }}
+      
     />,
   )
   expect(cb).toBeCalledTimes(1)

@@ -15,14 +15,19 @@ import com.lynx.service.log.LynxLogService
 import com.lynx.tasm.LynxEnv
 import com.lynx.tasm.service.LynxServiceCenter
 import com.lynx.service.http.LynxHttpService
+import com.lynx.kotlinemptyproject.modules.NativeLocalStorageModule
 
 class YourApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         initLynxService()
         initLynxEnv()
+        initModule()
     }
 
+    private fun initModule(){
+        LynxEnv.inst().registerModule("NativeLocalStorageModule", NativeLocalStorageModule::class.java);
+    }
     private fun initLynxService() {
         // init Fresco which is needed by LynxImageService
         val factory = PoolFactory(PoolConfig.newBuilder().build())
