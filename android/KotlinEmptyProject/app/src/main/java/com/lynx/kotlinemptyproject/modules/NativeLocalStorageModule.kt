@@ -5,13 +5,14 @@ import com.lynx.jsbridge.LynxMethod
 import com.lynx.jsbridge.LynxModule
 import com.lynx.tasm.behavior.LynxContext
 import com.lynx.react.bridge.Callback
+import com.lynx.react.bridge.JavaOnlyArray
 
 class NativeLocalStorageModule(context: Context) : LynxModule(context) {
     private val PREF_NAME = "MyLocalStorage"
 
     private fun getContext(): Context {
         val lynxContext = mContext as LynxContext
-        return lynxContext.getContext()
+        return lynxContext.context
     }
 
     @LynxMethod
