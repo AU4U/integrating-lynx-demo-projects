@@ -24,14 +24,13 @@ class MainActivity : Activity() {
 
         val uri = "http://192.168.0.204:3000/main.lynx.bundle";
         lynxView.renderTemplateUrl(uri, "")
-
         val arg = JavaOnlyArray()
         arg.pushString("hello")
         arg.pushString("world")
         arg.pushInt(99)
         arg.pushDouble(1.0)
         arg.pushDouble(3.14)
-        Log.e("JavaOnlyArray", "arg size is :" + arg.size)
+        arg.pushBoolean(false)
         lynxView.sendGlobalEvent("n2j", arg)
         // open switch page
 //        startActivity(Intent(this, SwitchActivity::class.java));
