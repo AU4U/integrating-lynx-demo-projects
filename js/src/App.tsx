@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from '@lynx-js/react';
+import './App.css'
 type BannerItem = {
   id: number;
   title: string;
@@ -9,19 +10,19 @@ type BannerItem = {
 const bannerList: BannerItem[] = [
   {
     id: 1,
-    title: '海边假日',
+    title: '1海边假日',
     subtitle: '精选海岛酒店低至 5 折',
     bg: 'linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%)',
   },
   {
     id: 2,
-    title: '城市周末',
+    title: '2城市周末',
     subtitle: '本地热门玩乐一站购齐',
     bg: 'linear-gradient(135deg, #f97316 0%, #fb7185 100%)',
   },
   {
     id: 3,
-    title: '山野露营',
+    title: '3山野露营',
     subtitle: '露营装备限时满减',
     bg: 'linear-gradient(135deg, #22c55e 0%, #14b8a6 100%)',
   },
@@ -34,18 +35,14 @@ const STEP = CARD_WIDTH + CARD_GAP;
 export function App() {
   const [current, setCurrent] = useState(0);
 
-  const dots = useMemo(() => bannerList.map((_, idx) => idx), []);
   const scrollLeft = current * STEP;
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrent((prev) => {
-        if (prev >= bannerList.length - 1) {
-          return prev;
-        }
-        return prev + 1;
+      setCurrent((prevState) => {
+        return (prevState + 1) / 3;
       });
-    }, 3000);
+    }, 1000);
 
     return () => clearInterval(timer);
   }, []);
@@ -61,15 +58,16 @@ export function App() {
 
   return (
     <view style={styles.page}>
-      <text className="text-white">Hello this is a test</text>
+      <view className={"text-4xl text-white"}>
+        当前的索引是{current}
+      </view>
+      {current}
+      <text className="text-white">Hello this is a test + {current}</text>
       <scroll-view
         style={styles.swiper}
         scroll-x={true}
         scroll-left={scrollLeft}
-        scroll-with-animation={true}
-        scroll-event-throttle={16}
         show-scrollbar={false}
-        enable-flex={true}
         bindscroll={handleScroll}
       >
         <view style={styles.track}>
@@ -83,22 +81,6 @@ export function App() {
           ))}
         </view>
       </scroll-view>
-
-      <view style={styles.dotRow}>
-        {dots.map((idx) => (
-          <view
-            key={idx}
-            style={{
-              ...styles.dot,
-              ...(current === idx ? styles.dotActive : null),
-            }}
-          />
-        ))}
-      </view>
-
-      {/*<text style={styles.desc}>*/}
-      {/*  自动轮播（每 3 秒） {current + 1} / {bannerList.length}*/}
-      {/*</text>*/}
     </view>
   );
 }
