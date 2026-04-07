@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from '@lynx-js/react';
-import './App.css'
+import { useEffect, useState } from '@lynx-js/react';
+import './App.css';
 type BannerItem = {
   id: number;
   title: string;
@@ -40,10 +40,9 @@ export function App() {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrent((prevState) => {
-        return (prevState + 1) / 3;
+        return (prevState + 1) % 3;
       });
-    }, 1000);
-
+    }, 3000);
     return () => clearInterval(timer);
   }, []);
 
@@ -58,16 +57,13 @@ export function App() {
 
   return (
     <view style={styles.page}>
-      <view className={"text-4xl text-white"}>
-        当前的索引是{current}
-      </view>
+      <view className={'text-4xl text-white'}>当前的索引是{current}</view>
       {current}
       <text className="text-white">Hello this is a test + {current}</text>
       <scroll-view
         style={styles.swiper}
         scroll-x={true}
         scroll-left={scrollLeft}
-        show-scrollbar={false}
         bindscroll={handleScroll}
       >
         <view style={styles.track}>

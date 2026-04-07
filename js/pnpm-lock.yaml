@@ -18,9 +18,6 @@ importers:
       '@eslint/js':
         specifier: ^9.39.2
         version: 9.39.4
-      '@lynx-js/preact-devtools':
-        specifier: ^5.0.1
-        version: 5.0.1
       '@lynx-js/qrcode-rsbuild-plugin':
         specifier: ^0.4.6
         version: 0.4.6
@@ -658,9 +655,6 @@ packages:
 
   '@lynx-js/internal-preact@10.28.4-ee7bb26':
     resolution: {integrity: sha512-Ym60mgGjj/Xc/5yfludUCUXVCyVACUsNaA7E9Uct2yArsT5nlvp9bflUoLrTNMvApKvbhUBCTx27aNYCquhEYg==}
-
-  '@lynx-js/preact-devtools@5.0.1':
-    resolution: {integrity: sha512-ayUU8PJ0TVWABbd5/d/04KI18W9RY4kkaRekBXXbRE/eBkGMZ3lVJ0zOB+B+85B9RUpvEVK2FleqJkS+qBKG6Q==}
 
   '@lynx-js/qrcode-rsbuild-plugin@0.4.6':
     resolution: {integrity: sha512-KHnvkccapEWEtfRMJ4GxNoZDsv8c0RlfNfc3la/z8G2eP+vb8VtKG1Atk2FVagUVnJcuePeuue8LaivzoM/Irw==}
@@ -1807,9 +1801,6 @@ packages:
     engines: {node: '>=4'}
     hasBin: true
 
-  errorstacks@2.4.1:
-    resolution: {integrity: sha512-jE4i0SMYevwu/xxAuzhly/KTwtj0xDhbzB6m1xPImxTkw8wcCbgarOQPfCVMi5JKVyW7in29pNJCCJrry3Ynnw==}
-
   es-abstract@1.24.1:
     resolution: {integrity: sha512-zHXBLhP+QehSSbsS9Pt23Gg964240DPd6QCf8WpkqEXxQ7fhdZzYsocOr5u7apWonsS5EjZDmTF+/slGMyasvw==}
     engines: {node: '>= 0.4'}
@@ -2118,9 +2109,6 @@ packages:
 
   hermes-parser@0.25.1:
     resolution: {integrity: sha512-6pEjquH3rqaI6cYAXYPcz9MS4rY6R4ngRgrgfDshRptUZIc3lw0MCIJIGDj9++mfySOuPTHB4nrSW99BCvOPIA==}
-
-  htm@3.1.1:
-    resolution: {integrity: sha512-983Vyg8NwUE7JkZ6NmOqpCZ+sh1bKv2iYTlUkzlWmA5JD2acKoxd4KVxbMmxX/85mtfdnDmTFoNKcg5DGAvxNQ==}
 
   html-encoding-sniffer@6.0.0:
     resolution: {integrity: sha512-CV9TW3Y3f8/wT0BRFc1/KAVQ3TUHiXmaAb6VW9vtiMFf7SLoMd1PdAc4W3KFOFETBJUb90KatHqlsZMWV+R9Gg==}
@@ -4030,11 +4018,6 @@ snapshots:
 
   '@lynx-js/internal-preact@10.28.4-ee7bb26': {}
 
-  '@lynx-js/preact-devtools@5.0.1':
-    dependencies:
-      errorstacks: 2.4.1
-      htm: 3.1.1
-
   '@lynx-js/qrcode-rsbuild-plugin@0.4.6': {}
 
   '@lynx-js/react-alias-rsbuild-plugin@0.13.0': {}
@@ -5314,8 +5297,6 @@ snapshots:
 
   envinfo@7.14.0: {}
 
-  errorstacks@2.4.1: {}
-
   es-abstract@1.24.1:
     dependencies:
       array-buffer-byte-length: 1.0.2
@@ -5713,8 +5694,6 @@ snapshots:
   hermes-parser@0.25.1:
     dependencies:
       hermes-estree: 0.25.1
-
-  htm@3.1.1: {}
 
   html-encoding-sniffer@6.0.0:
     dependencies:
