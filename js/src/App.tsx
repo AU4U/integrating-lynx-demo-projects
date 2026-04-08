@@ -1,5 +1,7 @@
-import { useEffect, useState } from '@lynx-js/react';
+import { useEffect, useRef, useState } from '@lynx-js/react';
 import './App.css';
+import type { ScrollEndEvent, ScrollEvent } from '@lynx-js/types';
+
 type BannerItem = {
   id: number;
   title: string;
@@ -29,46 +31,88 @@ const bannerList: BannerItem[] = [
 ];
 
 const CARD_WIDTH = 360;
-const CARD_GAP = 8;
-const STEP = CARD_WIDTH + CARD_GAP;
 
 export function App() {
   const [current, setCurrent] = useState(0);
 
-  const scrollLeft = current * STEP;
+  // const scrollLeft = current * CARD_WIDTH;
+
+  // useEffect(() => {
+  //   const timer = setInterval(() => {
+  //     setCurrent((prevState) => {
+  //       return (prevState + 1) % 3;
+  //     });
+  //   }, 3000);
+  //   return () => clearInterval(timer);
+  // }, []);
+  // const [scrollLeft, setScrollLeft] = useState(0);
+  const [scrollLeftEnd, setScrollLeftEnd] = useState(0);
+  const [interpolation, setInterpolation] = useState(0);
+  const [currentKey, setCurrentKey] = useState<number>(1);
+  const prevScrollLeft = useRef<number>(0);
+  const handleScroll = (event: ScrollEvent) => {
+    // setScrollLeft(event.detail?.scrollLeft);
+  };
+  const handleScrollEnd = (event: ScrollEndEvent) => {
+    console.log('handleScrollEnd');
+    if (event.detail.scrollLeft < 0) {
+      setScrollLeftEnd(0);
+      return;
+    }
+    setScrollLeftEnd(event.detail.scrollLeft);
+  };
+  useEffect(() => {
+    console.log('effect scrollLeftEnd' + scrollLeftEnd);
+    setInterpolation(scrollLeftEnd - prevScrollLeft.current);
+    // console.log('>>>current:  ' + scrollLeftEnd);
+    // console.log('>>>preview:  ' + prevScrollLeft.current);
+    prevScrollLeft.current = scrollLeftEnd;
+  }, [scrollLeftEnd]);
+
+  function scrollIntoView(foo: number) {
+    lynx
+      .createSelectorQuery()
+      .select('#k' + foo)
+      .invoke({
+        method: 'scrollIntoVie',
+        params: {
+          scrollIntoViewOptions: {
+            block: 'center', // 纵向对齐方式: “start" 顶对齐 | "center" 居中对齐 | "end" 底对齐
+            inline: 'start', // 横向对齐方式： "start" 左对齐 | "center" 居中对齐 | "end" 右对齐
+            behavior: 'smooth', // 'smooth', // "smooth" | "none" 可选，指顶滚动是否带有动画
+          },
+        },
+      })
+      .exec();
+  }
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrent((prevState) => {
-        return (prevState + 1) % 3;
-      });
-    }, 3000);
-    return () => clearInterval(timer);
-  }, []);
-
-  const handleScroll = (event: { detail?: { scrollLeft?: number } }) => {
-    const left = event.detail?.scrollLeft ?? 0;
-    const idx = Math.round(left / STEP);
-    const next = Math.max(0, Math.min(idx, bannerList.length - 1));
-    if (next !== current) {
-      setCurrent(next);
+    console.log('effect interpolation:' + interpolation);
+    if (interpolation > 100) {
+      const foo = currentKey + 1;
+      setCurrentKey(foo);
+      console.log(' 大于100 /' + foo);
+      scrollIntoView(foo);
+    } else if (interpolation < -100) {
+      console.log(' 小于-100');
+      setCurrentKey(currentKey - 1);
+    } else {
+      console.log('小于 100 大于 -100');
     }
-  };
-
+  }, [interpolation]);
   return (
     <view style={styles.page}>
-      <view className={'text-4xl text-white'}>当前的索引是{current}</view>
-      {current}
-      <text className="text-white">Hello this is a test + {current}</text>
+      <text className="text-white">{currentKey}</text>
       <scroll-view
+        id="scroll"
         style={styles.swiper}
         scroll-x={true}
-        scroll-left={scrollLeft}
         bindscroll={handleScroll}
+        bindscrollend={handleScrollEnd}
       >
         <view style={styles.track}>
           {bannerList.map((item) => (
-            <view key={item.id} style={styles.slideWrap}>
+            <view id={'k' + item.id} style={styles.slideWrap}>
               <view style={{ ...styles.slideCard, background: item.bg }}>
                 <text style={styles.slideTitle}>{item.title}</text>
                 <text style={styles.slideSubtitle}>{item.subtitle}</text>
@@ -77,6 +121,9 @@ export function App() {
           ))}
         </view>
       </scroll-view>
+      <text className="items-center flex justify-center border text-white w-24 h-16">
+        {'btn'}
+      </text>
     </view>
   );
 }
