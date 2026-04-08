@@ -30,22 +30,10 @@ const bannerList: BannerItem[] = [
   },
 ];
 
-const CARD_WIDTH = 360;
 
 export function App() {
-  const [current, setCurrent] = useState(0);
 
-  // const scrollLeft = current * CARD_WIDTH;
 
-  // useEffect(() => {
-  //   const timer = setInterval(() => {
-  //     setCurrent((prevState) => {
-  //       return (prevState + 1) % 3;
-  //     });
-  //   }, 3000);
-  //   return () => clearInterval(timer);
-  // }, []);
-  // const [scrollLeft, setScrollLeft] = useState(0);
   const [scrollLeftEnd, setScrollLeftEnd] = useState(0);
   const [interpolation, setInterpolation] = useState(0);
   const [currentKey, setCurrentKey] = useState<number>(1);
@@ -53,6 +41,7 @@ export function App() {
   const handleScroll = (event: ScrollEvent) => {
     // setScrollLeft(event.detail?.scrollLeft);
   };
+
   const handleScrollEnd = (event: ScrollEndEvent) => {
     console.log('handleScrollEnd');
     if (event.detail.scrollLeft < 0) {
@@ -62,7 +51,7 @@ export function App() {
     setScrollLeftEnd(event.detail.scrollLeft);
   };
   useEffect(() => {
-    console.log('effect scrollLeftEnd' + scrollLeftEnd);
+    // console.log('effect scrollLeftEnd' + scrollLeftEnd);
     setInterpolation(scrollLeftEnd - prevScrollLeft.current);
     // console.log('>>>current:  ' + scrollLeftEnd);
     // console.log('>>>preview:  ' + prevScrollLeft.current);
@@ -72,9 +61,9 @@ export function App() {
   function scrollIntoView(foo: number) {
     lynx
       .createSelectorQuery()
-      .select('#k' + foo)
+      .select('#k' + foo  )
       .invoke({
-        method: 'scrollIntoVie',
+        method: 'scrollIntoView',
         params: {
           scrollIntoViewOptions: {
             block: 'center', // 纵向对齐方式: “start" 顶对齐 | "center" 居中对齐 | "end" 底对齐
@@ -82,23 +71,33 @@ export function App() {
             behavior: 'smooth', // 'smooth', // "smooth" | "none" 可选，指顶滚动是否带有动画
           },
         },
+        success:(res) => {
+          console.log('scrollIntoView success:' + JSON.stringify(res));
+        },
+        fail: (err) => {
+          console.log('scrollIntoView error:' + JSON.stringify(err));
+        }
       })
       .exec();
   }
-
+  useEffect(() => {
+    scrollIntoView(currentKey);
+  }, [currentKey]);
+  const handleClickBtn = () => {
+    setCurrentKey(currentKey + 1)
+  };
   useEffect(() => {
     console.log('effect interpolation:' + interpolation);
-    if (interpolation > 100) {
-      const foo = currentKey + 1;
-      setCurrentKey(foo);
-      console.log(' 大于100 /' + foo);
-      scrollIntoView(foo);
-    } else if (interpolation < -100) {
-      console.log(' 小于-100');
-      setCurrentKey(currentKey - 1);
-    } else {
-      console.log('小于 100 大于 -100');
-    }
+    // if (interpolation > 100) {
+    //   const foo = currentKey + 1;
+    //   console.log(' 大于100 /' + foo);
+    //   scrollIntoView(foo);
+    // } else if (interpolation < -100) {
+    //   console.log(' 小于-100');
+    //   setCurrentKey(currentKey - 1);
+    // } else {
+    //   console.log('小于 100 大于 -100');
+    // }
   }, [interpolation]);
   return (
     <view style={styles.page}>
@@ -121,8 +120,9 @@ export function App() {
           ))}
         </view>
       </scroll-view>
-      <text className="items-center flex justify-center border text-white w-24 h-16">
-        {'btn'}
+      <text className="items-center flex justify-center border text-white w-24 h-16"
+      bindtap={handleClickBtn}>
+        {'btn' + currentKey}
       </text>
     </view>
   );
