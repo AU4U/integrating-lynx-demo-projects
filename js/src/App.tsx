@@ -1,6 +1,11 @@
 import { useEffect, useRef, useState } from '@lynx-js/react';
 import './App.css';
-import type { ScrollEndEvent, ScrollEvent } from '@lynx-js/types';
+import type {
+  BaseTouchEvent,
+  ScrollEndEvent,
+  ScrollEvent, Target,
+  TouchStartProps
+} from '@lynx-js/types';
 
 type BannerItem = {
   id: number;
@@ -30,38 +35,22 @@ const bannerList: BannerItem[] = [
   },
 ];
 
-
 export function App() {
-
-
-  const [scrollLeftEnd, setScrollLeftEnd] = useState(0);
-  const [interpolation, setInterpolation] = useState(0);
   const [currentKey, setCurrentKey] = useState<number>(1);
-  const prevScrollLeft = useRef<number>(0);
-  const handleScroll = (event: ScrollEvent) => {
-    // setScrollLeft(event.detail?.scrollLeft);
-  };
+  const [touchStart, setTouchStart] = useState(0);
 
-  const handleScrollEnd = (event: ScrollEndEvent) => {
-    console.log('handleScrollEnd');
-    if (event.detail.scrollLeft < 0) {
-      setScrollLeftEnd(0);
-      return;
-    }
-    setScrollLeftEnd(event.detail.scrollLeft);
+  const handleTounchMove = (event: any) => {
+    console.log('handleTouchMove');
+    // console.log('>>>' + JSON.stringify(event));
   };
-  useEffect(() => {
-    // console.log('effect scrollLeftEnd' + scrollLeftEnd);
-    setInterpolation(scrollLeftEnd - prevScrollLeft.current);
-    // console.log('>>>current:  ' + scrollLeftEnd);
-    // console.log('>>>preview:  ' + prevScrollLeft.current);
-    prevScrollLeft.current = scrollLeftEnd;
-  }, [scrollLeftEnd]);
-
+  const handleTouchEnd = (event: any) => {
+    console.log('handleTouchEnd');
+    // console.log('>>>' + JSON.stringify(event));
+  };
   function scrollIntoView(foo: number) {
     lynx
       .createSelectorQuery()
-      .select('#k' + foo  )
+      .select('#k' + foo)
       .invoke({
         method: 'scrollIntoView',
         params: {
@@ -71,12 +60,12 @@ export function App() {
             behavior: 'smooth', // 'smooth', // "smooth" | "none" 可选，指顶滚动是否带有动画
           },
         },
-        success:(res) => {
+        success: (res) => {
           console.log('scrollIntoView success:' + JSON.stringify(res));
         },
         fail: (err) => {
           console.log('scrollIntoView error:' + JSON.stringify(err));
-        }
+        },
       })
       .exec();
   }
@@ -84,21 +73,25 @@ export function App() {
     scrollIntoView(currentKey);
   }, [currentKey]);
   const handleClickBtn = () => {
-    setCurrentKey(currentKey + 1)
+    setCurrentKey(currentKey + 1);
   };
-  useEffect(() => {
-    console.log('effect interpolation:' + interpolation);
-    // if (interpolation > 100) {
-    //   const foo = currentKey + 1;
-    //   console.log(' 大于100 /' + foo);
-    //   scrollIntoView(foo);
-    // } else if (interpolation < -100) {
-    //   console.log(' 小于-100');
-    //   setCurrentKey(currentKey - 1);
-    // } else {
-    //   console.log('小于 100 大于 -100');
-    // }
-  }, [interpolation]);
+  // useEffect(() => {
+  //   console.log('effect interpolation:' + interpolation);
+  //   // if (interpolation > 100) {
+  //   //   const foo = currentKey + 1;
+  //   //   console.log(' 大于100 /' + foo);
+  //   //   scrollIntoView(foo);
+  //   // } else if (interpolation < -100) {
+  //   //   console.log(' 小于-100');
+  //   //   setCurrentKey(currentKey - 1);
+  //   // } else {
+  //   //   console.log('小于 100 大于 -100');
+  //   // }
+  const onTouchStart = (event: BaseTouchEvent<Target>) => {
+    console.log(event);
+  };
+
+  // }, [interpolation]);
   return (
     <view style={styles.page}>
       <text className="text-white">{currentKey}</text>
@@ -106,8 +99,11 @@ export function App() {
         id="scroll"
         style={styles.swiper}
         scroll-x={true}
-        bindscroll={handleScroll}
-        bindscrollend={handleScrollEnd}
+        // bindscroll={handleScroll}
+        // bindscrollend={handleScrollEnd}
+        bindtouchstart={onTouchStart}
+        bindtouchmove={handleTounchMove}
+        bindtouchend={handleTouchEnd}
       >
         <view style={styles.track}>
           {bannerList.map((item) => (
@@ -120,8 +116,10 @@ export function App() {
           ))}
         </view>
       </scroll-view>
-      <text className="items-center flex justify-center border text-white w-24 h-16"
-      bindtap={handleClickBtn}>
+      <text
+        className="items-center flex justify-center border text-white w-24 h-16"
+        bindtap={handleClickBtn}
+      >
         {'btn' + currentKey}
       </text>
     </view>
